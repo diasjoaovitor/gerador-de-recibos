@@ -16,8 +16,8 @@ export default (plop) => {
       },
       {
         type: 'add',
-        path: '../src/components/{{pascalCase name}}/{{kebabCase name}}.test.tsx',
-        templateFile: 'templates/test.tsx.hbs'
+        path: '../src/components/{{pascalCase name}}/styles.ts',
+        templateFile: 'templates/styles.ts.hbs'
       }
     ]
   })
