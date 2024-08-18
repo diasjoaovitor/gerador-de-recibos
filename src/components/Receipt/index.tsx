@@ -7,11 +7,11 @@ import { FormControl, SelectChangeEvent } from '@mui/material'
 import { Layout, Select } from '@/components'
 import { TCompany, TEmployee, TSalary } from '@/types'
 import { useAlert } from '@/hooks'
+import { salario } from '@/pdf'
+import { getStorage } from '@/utils'
 import { Salario, salarySchema } from './components'
 import { selectItems } from './select-items'
 import { currentDate, getYearMonth } from './date'
-import { salario } from '@/pdf'
-import { getStorage } from '@/utils'
 
 type TReceiptProps = {
   isLoading: boolean
@@ -19,9 +19,6 @@ type TReceiptProps = {
   salaries: TSalary[] | undefined
   setStep: (step: number) => void
 }
-
-const company = getStorage('company') as TCompany
-const employee = getStorage('employee') as TEmployee
 
 export const Receipt = ({
   isLoading,
@@ -31,12 +28,24 @@ export const Receipt = ({
 }: TReceiptProps) => {
   ;(window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs
 
+  const [storageData, setStorageData] = useState<{
+    company: TCompany
+    employee: TEmployee
+  } | null>(null)
   const [option, setOption] = useState(0)
   const [date, setDate] = useState(currentDate)
   const [salary, setSalary] = useState(salaries ? salaries[0].salary : 0)
   const [isLocked, setIsLocked] = useState(false)
 
   const { alertProps, handleAlertOpen } = useAlert()
+
+  useEffect(() => {
+    const company = getStorage('company')
+    const employee = getStorage('employee')
+    if (company && employee) {
+      setStorageData({ company, employee })
+    }
+  }, [])
 
   useEffect(() => {
     if (!salaries || isLocked) return
@@ -93,14 +102,20 @@ export const Receipt = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { schema, data, title, fn } = components[option]
-    console.log({ data, company, employee })
+    if (!storageData) {
+      handleAlertOpen({
+        severity: 'error',
+        title: 'Dados da empresa e do funcionário não encontrados'
+      })
+      window.location.reload()
+      return
+    }
     schema
       .validate(data)
       .then(() => {
         const pdf = fn({
           header: {
-            company,
-            employee,
+            ...storageData,
             title
           },
           main: data
