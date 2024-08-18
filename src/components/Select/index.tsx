@@ -2,7 +2,7 @@ import { MenuItem, Select as MUISelect, SelectProps } from '@mui/material'
 
 type TSelectProps = SelectProps & {
   items: {
-    value: string
+    value: string | number
     name: string
   }[]
 }
