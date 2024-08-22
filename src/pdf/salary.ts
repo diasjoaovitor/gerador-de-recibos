@@ -1,16 +1,14 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
 import { formatCurrency, formatDate, formatToExtensive } from '@/utils'
 import { docFooter, docHeader, docStyles, TDocHeader } from './partials'
+import { TSalaryOrTThirteenthReceipt } from '@/types'
 
-export type TSalarioPDF = {
+export type TSalaryPDF = {
   header: TDocHeader
-  main: {
-    salary: number
-    date: string
-  }
+  main: TSalaryOrTThirteenthReceipt
 }
 
-export const salario = (args: TSalarioPDF): TDocumentDefinitions => {
+export const salaryPdf = (args: TSalaryPDF): TDocumentDefinitions => {
   const {
     header,
     main: { salary, date }

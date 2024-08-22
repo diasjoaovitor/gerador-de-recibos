@@ -1,17 +1,25 @@
 import * as pdfMake from 'pdfmake/build/pdfmake'
 import * as pdfFonts from 'pdfmake/build/vfs_fonts'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { ValidationError } from 'yup'
 import { Dayjs } from 'dayjs'
 import { FormControl, SelectChangeEvent } from '@mui/material'
 import { Layout, Select } from '@/components'
 import { TCompany, TEmployee, TSalary } from '@/types'
 import { useAlert } from '@/hooks'
-import { salario } from '@/pdf'
-import { getStorage } from '@/utils'
-import { Salario, salarySchema } from './components'
+import { salaryPdf, thirteenthSalaryPdf, vacationPdf } from '@/pdf'
+import { formatCurrencyToNumber, getStorage } from '@/utils'
 import { selectItems } from './select-items'
-import { currentDate, getYearMonth } from './date'
+import {
+  currentDate,
+  getEndDate,
+  getNumberOfMonths,
+  getPeriod,
+  getYearMonth
+} from './date'
+import { getNetValue, getOneThird } from './receipt'
+import { salaryOrThirteenthSchema, vacationSchema } from './schemas'
+import { SalaryOrThirteenth, Vacation } from './Options'
+import { ValidationError } from 'yup'
 
 type TReceiptProps = {
   isLoading: boolean
@@ -34,7 +42,13 @@ export const Receipt = ({
   } | null>(null)
   const [option, setOption] = useState(0)
   const [date, setDate] = useState(currentDate)
+  const [endDate, setEndDate] = useState(getEndDate(currentDate))
+  const [period, setPeriod] = useState(getPeriod(date, endDate))
   const [salary, setSalary] = useState(salaries ? salaries[0].salary : 0)
+  const [oneThird, setOneThird] = useState(getOneThird(salary))
+  const [netValue, setNetValue] = useState(
+    getNetValue({ salary, oneThird, months: 1 })
+  )
   const [isLocked, setIsLocked] = useState(false)
 
   const { alertProps, handleAlertOpen } = useAlert()
@@ -56,6 +70,35 @@ export const Receipt = ({
   }, [date, salaries, isLocked])
 
   useEffect(() => {
+    const endDate = getEndDate(date)
+    setEndDate(endDate)
+    setPeriod(getPeriod(date, endDate))
+  }, [date])
+
+  useEffect(() => {
+    setPeriod(getPeriod(date, endDate))
+    setNetValue(
+      getNetValue({
+        salary,
+        oneThird,
+        months: getNumberOfMonths(date, endDate)
+      })
+    )
+  }, [endDate])
+
+  useEffect(() => {
+    const oneThird = getOneThird(salary)
+    setOneThird(oneThird)
+    setNetValue(
+      getNetValue({
+        salary,
+        oneThird,
+        months: getNumberOfMonths(date, endDate)
+      })
+    )
+  }, [salary])
+
+  useEffect(() => {
     if (isError) {
       handleAlertOpen({
         severity: 'error',
@@ -64,7 +107,7 @@ export const Receipt = ({
     }
   }, [isError, handleAlertOpen])
 
-  const handleSelectChange = (e: SelectChangeEvent<unknown>) => {
+  const handleOptionChange = (e: SelectChangeEvent<unknown>) => {
     setOption(Number(e.target.value))
   }
 
@@ -72,8 +115,24 @@ export const Receipt = ({
     setDate(e.format('YYYY-MM-DD'))
   }
 
+  const handleEndDateChange = (e: Dayjs) => {
+    setEndDate(e.format('YYYY-MM-DD'))
+  }
+
+  const handlePeriodChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPeriod(e.target.value)
+  }
+
   const handleSalaryChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSalary(Number(e.target.value))
+    setSalary(formatCurrencyToNumber(e.target.value))
+  }
+
+  const handleOneThirdChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setOneThird(formatCurrencyToNumber(e.target.value))
+  }
+
+  const handleNetValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNetValue(formatCurrencyToNumber(e.target.value))
   }
 
   const handleLockClick = () => {
@@ -82,18 +141,58 @@ export const Receipt = ({
 
   const components = [
     {
-      schema: salarySchema,
+      schema: salaryOrThirteenthSchema,
       data: { salary, date },
       title: 'Recibo de Salário',
-      fn: salario,
+      fn: salaryPdf,
       component: (
-        <Salario
-          salary={salary}
+        <SalaryOrThirteenth
           date={date}
+          salary={salary}
           isLocked={isLocked}
-          handleLockClick={handleLockClick}
-          handleSalaryChange={handleSalaryChange}
           handleDateChange={handleDateChange}
+          handleSalaryChange={handleSalaryChange}
+          handleLockClick={handleLockClick}
+        />
+      )
+    },
+    {
+      schema: vacationSchema,
+      data: { date, endDate, period, salary, oneThird, netValue },
+      title: 'Recibo de Férias',
+      fn: vacationPdf,
+      component: (
+        <Vacation
+          date={date}
+          endDate={endDate}
+          period={period}
+          salary={salary}
+          oneThird={oneThird}
+          netValue={netValue}
+          isLocked={isLocked}
+          handleDateChange={handleDateChange}
+          handleEndDateChange={handleEndDateChange}
+          handlePeriodChange={handlePeriodChange}
+          handleSalaryChange={handleSalaryChange}
+          handleOneThirdChange={handleOneThirdChange}
+          handleNetValueChange={handleNetValueChange}
+          handleLockClick={handleLockClick}
+        />
+      )
+    },
+    {
+      schema: salaryOrThirteenthSchema,
+      data: { salary, date },
+      title: 'Recibo de Décimo Terceiro',
+      fn: thirteenthSalaryPdf,
+      component: (
+        <SalaryOrThirteenth
+          date={date}
+          salary={salary}
+          isLocked={isLocked}
+          handleDateChange={handleDateChange}
+          handleSalaryChange={handleSalaryChange}
+          handleLockClick={handleLockClick}
         />
       )
     }
@@ -101,31 +200,26 @@ export const Receipt = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const { schema, data, title, fn } = components[option]
     if (!storageData) {
       handleAlertOpen({
         severity: 'error',
-        title: 'Dados da empresa e do funcionário não encontrados'
+        title: 'Dados da empresa e do funcionário não encontrados',
+        description: 'Por favor, atualize a página e tente novamente'
       })
-      window.location.reload()
       return
     }
+    const { schema, title, data, fn } = components[option]
     schema
       .validate(data)
       .then(() => {
-        const pdf = fn({
-          header: {
-            ...storageData,
-            title
-          },
-          main: data
-        })
+        const pdf = fn({ header: { ...storageData, title }, main: data as any })
         pdfMake.createPdf(pdf).open()
       })
       .catch((error: ValidationError) => {
         handleAlertOpen({
           severity: 'error',
-          title: error.message
+          title: 'Erro ao gerar o recibo',
+          description: error.message
         })
       })
   }
@@ -142,7 +236,7 @@ export const Receipt = ({
         <Select
           items={selectItems}
           value={option}
-          onChange={handleSelectChange}
+          onChange={handleOptionChange}
           sx={{ mb: 2 }}
         />
       </FormControl>
