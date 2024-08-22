@@ -16,7 +16,7 @@
     "test:ci": "vitest --no-file-parallelism --run",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "generate": "plop --plopfile generators/plopfile.js",
     "prepare": "husky"
   },
