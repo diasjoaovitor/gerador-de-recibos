@@ -7,8 +7,14 @@ export const formatCurrency = (value: number) =>
     currency: 'BRL'
   }).format(value)
 
+export const formatCurrencyToNumber = (value: string) => {
+  return Number(value.replace('R$', '').replace('.', '').replace(',', '.'))
+}
+
 export const formatToExtensive = (value: number) => {
-  const sentence = extenso(Number(value), { mode: 'currency' })
+  const sentence = extenso(String(value).replace('.', ','), {
+    mode: 'currency'
+  })
   return sentence.slice(0, 3) === 'mil' ? `um ${sentence}` : sentence
 }
 
