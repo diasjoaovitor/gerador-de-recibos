@@ -50,7 +50,6 @@ export const Employee = ({ setStep }: TEmployeeProps) => {
           {...register('rg')}
         />
         <InputMask
-          type="cpf"
           label="CPF"
           format="###.###.###-##"
           error={!!errors.cpf}

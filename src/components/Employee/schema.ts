@@ -1,5 +1,5 @@
-import { cpfIsValid } from '@/utils'
 import * as yup from 'yup'
+import { cpfIsValid } from './cpf-validator'
 
 export const schema = yup.object().shape({
   name: yup.string().required('Nome da empresa é obrigatório'),
