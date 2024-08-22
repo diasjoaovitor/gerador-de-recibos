@@ -13,15 +13,15 @@ export type TInputCurrencyProps = Omit<
   OutlinedInputProps,
   'defaultValue' | 'type'
 > & {
-  isLocked: boolean
-  handleLockClick: () => void
+  isLocked?: boolean
+  handleLockClick?: () => void
 }
 
 export const InputCurrency = (props: TInputCurrencyProps) => {
   const { value, isLocked, handleLockClick, ...rest } = props
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth className="InputCurrency">
       <InputLabel htmlFor={rest.id || rest.name}>{rest.label}</InputLabel>
       <NumericFormat
         {...rest}
@@ -33,11 +33,13 @@ export const InputCurrency = (props: TInputCurrencyProps) => {
         fixedDecimalScale
         decimalScale={2}
         endAdornment={
-          <InputAdornment position="end">
-            <IconButton onClick={handleLockClick} edge="end">
-              {!isLocked ? <LockOpen /> : <Lock />}
-            </IconButton>
-          </InputAdornment>
+          isLocked !== undefined && (
+            <InputAdornment position="end">
+              <IconButton onClick={handleLockClick} edge="end">
+                {!isLocked ? <LockOpen /> : <Lock />}
+              </IconButton>
+            </InputAdornment>
+          )
         }
       />
     </FormControl>
