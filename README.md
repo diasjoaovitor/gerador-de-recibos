@@ -1,26 +1,22 @@
-# Vite Boilerplate
+# Gerador de Recibos
 
-Baseado no [boilerplate-apps-router](https://github.com/React-Avancado/boilerplate-apps-router) do curso [React Avançado](https://reactavancado.com.br/)
+Aplicação para gerar recibos simplificados de salário, férias e décimo terceiro.
+
+![Preview](./.github/preview.gif)
 
 ## Tecnologias
 
-- [Vite](https://vitejs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Vitest](https://vitest.dev/)
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-- [ESLint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
-- [Husky](https://typicode.github.io/husky/)
-- [Commit Linter](https://www.npmjs.com/package/git-commit-msg-linter)
-- [lint-staged](https://github.com/lint-staged/lint-staged#readme)
-- [Plop](https://plopjs.com/documentation/)
+- [Vite Boilerplate](https://github.com/diasjoaovitor/vite-boilerplate)
+- [MUI](https://mui.com//)
+- [Axios](https://github.com/axios/axios)
+- [Extenso](https://github.com/portujs/extenso.js#readme)
+- [PDFMake](http://pdfmake.org/#/)
 
-## Passo a passo
+## Como rodar o projeto
 
-Escrevi [esse tutorial](https://www.tabnews.com.br/diasjoaovitor/tutorial-como-criar-um-boilerplate-para-projetos-reactjs-utilizando-o-vite) incluindo todos os passos para a criação
-
-Caso queira utilizar esse boilerplate:
-
-```
-npx degit https://github.com/diasjoaovitor/vite-boilerplate my-app
+```sh
+git clone https://github.com/diasjoaovitor/gerador-de-recibos
+cd gerador-de-recibos
+npm i
+npm run dev
 ```
