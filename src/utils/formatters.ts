@@ -8,11 +8,11 @@ export const formatCurrency = (value: number) =>
   }).format(value)
 
 export const formatCurrencyToNumber = (value: string) => {
-  return Number(value.replace('R$', '').replace('.', '').replace(',', '.'))
+  return Number(value.replace('R$', '').replace(',', '.'))
 }
 
 export const formatToExtensive = (value: number) => {
-  const sentence = extenso(String(value).replace('.', ','), {
+  const sentence = extenso(String(value.toFixed(2)).replace('.', ','), {
     mode: 'currency'
   })
   return sentence.slice(0, 3) === 'mil' ? `um ${sentence}` : sentence
