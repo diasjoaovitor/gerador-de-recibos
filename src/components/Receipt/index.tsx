@@ -45,10 +45,17 @@ export const Receipt = ({
 }: TReceiptProps) => {
   ;(window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs
 
-  const [storageData, setStorageData] = useState<{
-    company: TCompany
-    employee: TEmployee
-  } | null>(null)
+  const getStorageData = () => {
+    const company = getStorage('company') as TCompany | null
+    const employee = getStorage('employee') as TEmployee | null
+    if (company && employee) {
+      return { company, employee }
+    }
+    return null
+  }
+
+  const storageData = getStorageData()
+
   const [option, setOption] = useState(0)
   const [date, setDate] = useState(currentDate)
   const [endDate, setEndDate] = useState(getEndDate(currentDate))
@@ -75,14 +82,6 @@ export const Receipt = ({
     salary,
     months: numberOfMonths
   })
-
-  useEffect(() => {
-    const company = getStorage('company')
-    const employee = getStorage('employee')
-    if (company && employee) {
-      setStorageData({ company, employee })
-    }
-  }, [])
 
   useEffect(() => {
     if (!salaries || isLocked) return

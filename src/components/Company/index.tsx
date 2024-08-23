@@ -5,9 +5,8 @@ import { Box, FormControl, SelectChangeEvent, TextField } from '@mui/material'
 import { InputMask, Layout, Select } from '@/components'
 import { TCompany } from '@/types'
 import { useAlert } from '@/hooks'
-import { setStorage } from '@/utils'
+import { getStorage, setStorage } from '@/utils'
 import { useLoadData } from './use-load-data'
-import { defaultValues } from './default-values'
 import { schema } from './schema'
 import { sortUfsByName } from './sort-ufs-by-name'
 import { sortCitiesByName } from './sort-cities-by-name'
@@ -18,6 +17,19 @@ type TCompanyProps = {
 }
 
 export const Company = ({ setStep }: TCompanyProps) => {
+  const getDefaultValues = () =>
+    (getStorage('company') as TCompany | null) || {
+      name: '',
+      cnpj: '',
+      tel: '',
+      street: '',
+      num: '',
+      district: '',
+      city: 'C',
+      uf: 'E'
+    }
+  const defaultValues = getDefaultValues()
+
   const [uf, setUf] = useState(defaultValues.uf)
   const [city, setCity] = useState(defaultValues.city)
 

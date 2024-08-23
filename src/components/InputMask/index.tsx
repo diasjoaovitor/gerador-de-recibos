@@ -7,6 +7,7 @@ type TInputMaskProps = Omit<
   'type' | 'value' | 'defaultValue'
 > & {
   format: string
+  type?: 'text' | 'password' | 'tel'
   value?: string
   defaultValue?: string
 }

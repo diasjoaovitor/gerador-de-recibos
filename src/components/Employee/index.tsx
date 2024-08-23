@@ -3,8 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormControl, TextField } from '@mui/material'
 import { InputMask, Layout, TAlertProps } from '@/components'
 import { TEmployee } from '@/types'
-import { setStorage } from '@/utils'
-import { defaultValues } from './default-values'
+import { getStorage, setStorage } from '@/utils'
 import { schema } from './schema'
 
 type TEmployeeProps = {
@@ -12,6 +11,14 @@ type TEmployeeProps = {
 }
 
 export const Employee = ({ setStep }: TEmployeeProps) => {
+  const getDefaultValues = () =>
+    (getStorage('employee') as TEmployee | null) || {
+      name: '',
+      rg: '',
+      cpf: ''
+    }
+  const defaultValues = getDefaultValues()
+
   const {
     formState: { errors },
     handleSubmit,
