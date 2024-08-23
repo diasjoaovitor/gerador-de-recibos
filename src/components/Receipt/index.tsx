@@ -6,7 +6,12 @@ import { FormControl, SelectChangeEvent } from '@mui/material'
 import { Layout, Select } from '@/components'
 import { TCompany, TEmployee, TSalary } from '@/types'
 import { useAlert } from '@/hooks'
-import { salaryPdf, thirteenthSalaryPdf, vacationPdf } from '@/pdf'
+import {
+  proportionalThirteenthPdf,
+  salaryPdf,
+  thirteenthSalaryPdf,
+  vacationPdf
+} from '@/pdf'
 import { formatCurrencyToNumber, getStorage } from '@/utils'
 import { selectItems } from './select-items'
 import {
@@ -16,9 +21,13 @@ import {
   getPeriod,
   getYearMonth
 } from './date'
-import { getNetValue, getOneThird } from './receipt'
-import { salaryOrThirteenthSchema, vacationSchema } from './schemas'
-import { SalaryOrThirteenth, Vacation } from './Options'
+import { getNetValue, getOneThird, getProportionalNetValue } from './receipt'
+import {
+  proportionalThirteenthSchema,
+  salaryOrThirteenthSchema,
+  vacationSchema
+} from './schemas'
+import { ProportionalThirteenth, SalaryOrThirteenth, Vacation } from './Options'
 import { ValidationError } from 'yup'
 
 type TReceiptProps = {
@@ -49,9 +58,23 @@ export const Receipt = ({
   const [netValue, setNetValue] = useState(
     getNetValue({ salary, oneThird, months: 1 })
   )
+  const [proportionalNetValue, setProportionalNetValue] = useState(
+    getProportionalNetValue({ salary, months: 1 })
+  )
   const [isLocked, setIsLocked] = useState(false)
 
   const { alertProps, handleAlertOpen } = useAlert()
+
+  const numberOfMonths = getNumberOfMonths(date, endDate)
+  const updatedNetValue = getNetValue({
+    salary,
+    oneThird,
+    months: numberOfMonths
+  })
+  const updatedProportionalNetValue = getProportionalNetValue({
+    salary,
+    months: numberOfMonths
+  })
 
   useEffect(() => {
     const company = getStorage('company')
@@ -77,25 +100,15 @@ export const Receipt = ({
 
   useEffect(() => {
     setPeriod(getPeriod(date, endDate))
-    setNetValue(
-      getNetValue({
-        salary,
-        oneThird,
-        months: getNumberOfMonths(date, endDate)
-      })
-    )
+    setNetValue(updatedNetValue)
+    setProportionalNetValue(updatedProportionalNetValue)
   }, [endDate])
 
   useEffect(() => {
     const oneThird = getOneThird(salary)
     setOneThird(oneThird)
-    setNetValue(
-      getNetValue({
-        salary,
-        oneThird,
-        months: getNumberOfMonths(date, endDate)
-      })
-    )
+    setNetValue(updatedNetValue)
+    setProportionalNetValue(updatedProportionalNetValue)
   }, [salary])
 
   useEffect(() => {
@@ -133,6 +146,12 @@ export const Receipt = ({
 
   const handleNetValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNetValue(formatCurrencyToNumber(e.target.value))
+  }
+
+  const handleProportionalNetValueChange = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    setProportionalNetValue(formatCurrencyToNumber(e.target.value))
   }
 
   const handleLockClick = () => {
@@ -192,6 +211,28 @@ export const Receipt = ({
           isLocked={isLocked}
           handleDateChange={handleDateChange}
           handleSalaryChange={handleSalaryChange}
+          handleLockClick={handleLockClick}
+        />
+      )
+    },
+    {
+      schema: proportionalThirteenthSchema,
+      data: { date, endDate, period, salary, proportionalNetValue },
+      title: 'Recibo de Décimo Terceiro Proporcional',
+      fn: proportionalThirteenthPdf,
+      component: (
+        <ProportionalThirteenth
+          date={date}
+          endDate={endDate}
+          period={period}
+          salary={salary}
+          proportionalNetValue={proportionalNetValue}
+          isLocked={isLocked}
+          handleDateChange={handleDateChange}
+          handleEndDateChange={handleEndDateChange}
+          handlePeriodChange={handlePeriodChange}
+          handleSalaryChange={handleSalaryChange}
+          handleProportionalNetValueChange={handleProportionalNetValueChange}
           handleLockClick={handleLockClick}
         />
       )

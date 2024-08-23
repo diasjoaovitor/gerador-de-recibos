@@ -2,7 +2,11 @@ import { ChangeEvent } from 'react'
 import { Dayjs } from 'dayjs'
 import { FormControl } from '@mui/material'
 import { InputCurrency, InputDate, Period } from '@/components'
-import { TSalaryOrTThirteenthReceipt, TVacationReceipt } from '@/types'
+import {
+  TProportionalThirteenthReceipt,
+  TSalaryOrTThirteenthReceipt,
+  TVacationReceipt
+} from '@/types'
 import * as S from './styles'
 
 type TBasicOptionProps = {
@@ -19,6 +23,13 @@ type TVacationOptionProps = {
   handleNetValueChange(e: ChangeEvent<HTMLInputElement>): void
 } & TBasicOptionProps &
   TVacationReceipt
+
+type TProportionalThirteenthOptionProps = {
+  handleEndDateChange(e: Dayjs): void
+  handlePeriodChange(e: ChangeEvent<HTMLInputElement>): void
+  handleProportionalNetValueChange(e: ChangeEvent<HTMLInputElement>): void
+} & TBasicOptionProps &
+  TProportionalThirteenthReceipt
 
 export const SalaryOrThirteenth = ({
   date,
@@ -81,6 +92,44 @@ export const Vacation = ({
       label="Valor Líquido"
       value={netValue}
       onChange={handleNetValueChange}
+    />
+  </FormControl>
+)
+
+export const ProportionalThirteenth = ({
+  date,
+  endDate,
+  period,
+  salary,
+  proportionalNetValue,
+  isLocked,
+  handleDateChange,
+  handleEndDateChange,
+  handlePeriodChange,
+  handleSalaryChange,
+  handleProportionalNetValueChange,
+  handleLockClick
+}: TProportionalThirteenthOptionProps) => (
+  <FormControl fullWidth sx={S.Wrapper}>
+    <Period
+      date={date}
+      endDate={endDate}
+      period={period}
+      handleDate={handleDateChange}
+      handleEndDate={handleEndDateChange}
+      handlePeriodChange={handlePeriodChange}
+    />
+    <InputCurrency
+      label="Salário"
+      value={salary}
+      isLocked={isLocked}
+      handleLockClick={handleLockClick}
+      onChange={handleSalaryChange}
+    />
+    <InputCurrency
+      label="Valor Líquido"
+      value={proportionalNetValue}
+      onChange={handleProportionalNetValueChange}
     />
   </FormControl>
 )

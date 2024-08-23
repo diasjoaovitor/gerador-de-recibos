@@ -12,11 +12,7 @@ export const selectItems = [
     value: 2
   },
   {
-    name: 'Férias Proporcionais',
-    value: 3
-  },
-  {
     name: 'Décimo Terceiro Proporcional',
-    value: 4
+    value: 3
   }
 ]
