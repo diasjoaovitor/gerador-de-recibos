@@ -8,7 +8,10 @@ export const formatCurrency = (value: number) =>
   }).format(value)
 
 export const formatCurrencyToNumber = (value: string) => {
-  return Number(value.replace('R$', '').replace(',', '.'))
+  const result = Number(
+    value.replace('R$', '').replace(/\./g, '').replace(',', '.')
+  )
+  return result
 }
 
 export const formatToExtensive = (value: number) => {
