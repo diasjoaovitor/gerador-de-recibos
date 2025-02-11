@@ -1,4 +1,4 @@
-import { ibjeApi } from '@/environment'
+import { ibjeApi } from '@/api'
 import { TUF } from '@/types'
 
 export const getUfs = async (): Promise<TUF[]> => {

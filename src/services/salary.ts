@@ -1,4 +1,4 @@
-import { salaryApi } from '@/environment'
+import { salaryApi } from '@/api'
 import { TSalary } from '@/types'
 
 export const getSalaries = async (): Promise<TSalary[]> => {
