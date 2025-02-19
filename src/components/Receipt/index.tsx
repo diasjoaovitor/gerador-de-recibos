@@ -101,14 +101,14 @@ export const Receipt = ({
     setPeriod(getPeriod(date, endDate))
     setNetValue(updatedNetValue)
     setProportionalNetValue(updatedProportionalNetValue)
-  }, [endDate])
+  }, [date, endDate, updatedNetValue, updatedProportionalNetValue])
 
   useEffect(() => {
     const oneThird = getOneThird(salary)
     setOneThird(oneThird)
     setNetValue(updatedNetValue)
     setProportionalNetValue(updatedProportionalNetValue)
-  }, [salary])
+  }, [salary, updatedNetValue, updatedProportionalNetValue])
 
   useEffect(() => {
     if (isError) {
