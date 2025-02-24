@@ -8,6 +8,9 @@ export const getProportionalNetValue = ({
 
 export const getOneThird = (salary: number) => salary / 3
 
+export const getProportionalOneThird = (salary: number, months: number) =>
+  (salary / 3 / 12) * months
+
 export const getNetValue = ({
   salary,
   months,

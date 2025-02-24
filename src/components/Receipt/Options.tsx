@@ -4,6 +4,7 @@ import { FormControl } from '@mui/material'
 import { InputCurrency, InputDate, Period } from '@/components'
 import {
   TProportionalThirteenthReceipt,
+  TProportionalVacationReceipt,
   TSalaryOrTThirteenthReceipt,
   TVacationReceipt
 } from '@/types'
@@ -23,6 +24,14 @@ type TVacationOptionProps = {
   handleNetValueChange(e: ChangeEvent<HTMLInputElement>): void
 } & TBasicOptionProps &
   TVacationReceipt
+
+type TProportionalVacationOptionProps = {
+  handleEndDateChange(e: Dayjs): void
+  handlePeriodChange(e: ChangeEvent<HTMLInputElement>): void
+  handleProportionalOneThirdChange(e: ChangeEvent<HTMLInputElement>): void
+  handleProportionalNetValueChange(e: ChangeEvent<HTMLInputElement>): void
+} & TBasicOptionProps &
+  TProportionalVacationReceipt
 
 type TProportionalThirteenthOptionProps = {
   handleEndDateChange(e: Dayjs): void
@@ -92,6 +101,51 @@ export const Vacation = ({
       label="Valor Líquido"
       value={netValue}
       onChange={handleNetValueChange}
+    />
+  </FormControl>
+)
+
+export const ProportionalVacation = ({
+  date,
+  endDate,
+  period,
+  salary,
+  proportionalOneThird,
+  proportionalNetValue,
+  isLocked,
+  handleDateChange,
+  handleEndDateChange,
+  handlePeriodChange,
+  handleSalaryChange,
+  handleProportionalOneThirdChange,
+  handleProportionalNetValueChange,
+  handleLockClick
+}: TProportionalVacationOptionProps) => (
+  <FormControl fullWidth sx={S.Wrapper}>
+    <Period
+      date={date}
+      endDate={endDate}
+      period={period}
+      handleDate={handleDateChange}
+      handleEndDate={handleEndDateChange}
+      handlePeriodChange={handlePeriodChange}
+    />
+    <InputCurrency
+      label="Salário"
+      value={salary}
+      isLocked={isLocked}
+      handleLockClick={handleLockClick}
+      onChange={handleSalaryChange}
+    />
+    <InputCurrency
+      label="Terço de Férias Proporcional"
+      value={proportionalOneThird}
+      onChange={handleProportionalOneThirdChange}
+    />
+    <InputCurrency
+      label="Valor Líquido"
+      value={proportionalNetValue}
+      onChange={handleProportionalNetValueChange}
     />
   </FormControl>
 )

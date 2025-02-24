@@ -8,11 +8,15 @@ export const selectItems = [
     value: 1
   },
   {
-    name: 'Décimo Terceiro',
+    name: 'Férias Proporcionais',
     value: 2
   },
   {
-    name: 'Décimo Terceiro Proporcional',
+    name: 'Décimo Terceiro',
     value: 3
+  },
+  {
+    name: 'Décimo Terceiro Proporcional',
+    value: 4
   }
 ]

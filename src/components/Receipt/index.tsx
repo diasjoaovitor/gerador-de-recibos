@@ -8,6 +8,7 @@ import { TCompany, TEmployee, TSalary } from '@/types'
 import { useAlert } from '@/hooks'
 import {
   proportionalThirteenthPdf,
+  proportionalVacationPdf,
   salaryPdf,
   thirteenthSalaryPdf,
   vacationPdf
@@ -21,13 +22,24 @@ import {
   getPeriod,
   getYearMonth
 } from './date'
-import { getNetValue, getOneThird, getProportionalNetValue } from './receipt'
+import {
+  getNetValue,
+  getOneThird,
+  getProportionalNetValue,
+  getProportionalOneThird
+} from './receipt'
 import {
   proportionalThirteenthSchema,
+  proportionalVacationSchema,
   salaryOrThirteenthSchema,
   vacationSchema
 } from './schemas'
-import { ProportionalThirteenth, SalaryOrThirteenth, Vacation } from './Options'
+import {
+  ProportionalThirteenth,
+  ProportionalVacation,
+  SalaryOrThirteenth,
+  Vacation
+} from './Options'
 import { ValidationError } from 'yup'
 
 type TReceiptProps = {
@@ -62,6 +74,9 @@ export const Receipt = ({
   const [period, setPeriod] = useState(getPeriod(date, endDate))
   const [salary, setSalary] = useState(salaries ? salaries[0].salary : 0)
   const [oneThird, setOneThird] = useState(getOneThird(salary))
+  const [proportionalOneThird, setProportionalOneThird] = useState(
+    getProportionalOneThird(salary, 1)
+  )
   const [netValue, setNetValue] = useState(
     getNetValue({ salary, oneThird, months: 1 })
   )
@@ -82,6 +97,8 @@ export const Receipt = ({
     salary,
     months: numberOfMonths
   })
+  const updatedProportionalVacationNetValue =
+    proportionalNetValue + proportionalOneThird
 
   useEffect(() => {
     if (!salaries || isLocked) return
@@ -106,9 +123,10 @@ export const Receipt = ({
   useEffect(() => {
     const oneThird = getOneThird(salary)
     setOneThird(oneThird)
+    setProportionalOneThird(getProportionalOneThird(salary, numberOfMonths))
     setNetValue(updatedNetValue)
     setProportionalNetValue(updatedProportionalNetValue)
-  }, [salary, updatedNetValue, updatedProportionalNetValue])
+  }, [salary, updatedNetValue, updatedProportionalNetValue, numberOfMonths])
 
   useEffect(() => {
     if (isError) {
@@ -141,6 +159,12 @@ export const Receipt = ({
 
   const handleOneThirdChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOneThird(formatCurrencyToNumber(e.target.value))
+  }
+
+  const handleProportionalOneThirdChange = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    setProportionalOneThird(formatCurrencyToNumber(e.target.value))
   }
 
   const handleNetValueChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -194,6 +218,36 @@ export const Receipt = ({
           handleSalaryChange={handleSalaryChange}
           handleOneThirdChange={handleOneThirdChange}
           handleNetValueChange={handleNetValueChange}
+          handleLockClick={handleLockClick}
+        />
+      )
+    },
+    {
+      schema: proportionalVacationSchema,
+      data: {
+        date,
+        endDate,
+        period,
+        salary,
+        updatedProportionalVacationNetValue
+      },
+      title: 'Recibo de Férias Proporcionais',
+      fn: proportionalVacationPdf,
+      component: (
+        <ProportionalVacation
+          date={date}
+          endDate={endDate}
+          period={period}
+          salary={salary}
+          proportionalOneThird={proportionalOneThird}
+          proportionalNetValue={updatedProportionalVacationNetValue}
+          isLocked={isLocked}
+          handleDateChange={handleDateChange}
+          handleEndDateChange={handleEndDateChange}
+          handlePeriodChange={handlePeriodChange}
+          handleSalaryChange={handleSalaryChange}
+          handleProportionalOneThirdChange={handleProportionalOneThirdChange}
+          handleProportionalNetValueChange={handleProportionalNetValueChange}
           handleLockClick={handleLockClick}
         />
       )
