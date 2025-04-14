@@ -1,4 +1,5 @@
 import * as yup from 'yup'
+
 import { cpfIsValid } from './cpf-validator'
 
 export const schema = yup.object().shape({

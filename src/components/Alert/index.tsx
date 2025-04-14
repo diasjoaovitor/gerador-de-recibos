@@ -1,10 +1,10 @@
+import { Close } from '@mui/icons-material'
 import {
+  Alert as MUIAlert,
   AlertTitle,
   IconButton,
-  Alert as MUIAlert,
   Snackbar
 } from '@mui/material'
-import { Close } from '@mui/icons-material'
 
 export type TAlertAttributes = {
   severity: 'error' | 'info' | 'success' | 'warning'

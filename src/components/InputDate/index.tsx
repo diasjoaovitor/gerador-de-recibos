@@ -1,12 +1,13 @@
-import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
+
+import { FormControl } from '@mui/material'
 import {
   DatePicker,
   DatePickerProps,
   LocalizationProvider
 } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { FormControl } from '@mui/material'
-import 'dayjs/locale/pt-br'
+import dayjs from 'dayjs'
 
 dayjs.locale('pt-br')
 

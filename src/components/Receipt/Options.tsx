@@ -1,6 +1,7 @@
-import { ChangeEvent } from 'react'
-import { Dayjs } from 'dayjs'
 import { FormControl } from '@mui/material'
+import { Dayjs } from 'dayjs'
+import { ChangeEvent } from 'react'
+
 import { InputCurrency, InputDate, Period } from '@/components'
 import {
   TProportionalThirteenthReceipt,
@@ -8,6 +9,7 @@ import {
   TSalaryOrTThirteenthReceipt,
   TVacationReceipt
 } from '@/types'
+
 import * as S from './styles'
 
 type TBasicOptionProps = {

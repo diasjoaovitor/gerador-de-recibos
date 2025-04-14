@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { TAlertProps, TAlertAttributes } from '@/components'
+
+import { TAlertAttributes, TAlertProps } from '@/components'
 
 export const useAlert = () => {
   const [alertProps, setAlertProps] = useState({} as TAlertProps)

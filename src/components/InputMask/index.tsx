@@ -1,6 +1,6 @@
-import { PatternFormat } from 'react-number-format'
 import { TextField, TextFieldProps } from '@mui/material'
 import { forwardRef } from 'react'
+import { PatternFormat } from 'react-number-format'
 
 type TInputMaskProps = Omit<
   TextFieldProps,

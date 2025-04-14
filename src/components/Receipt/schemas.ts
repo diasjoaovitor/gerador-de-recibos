@@ -1,4 +1,5 @@
 import * as yup from 'yup'
+
 import { endDateIsGreater } from './date'
 
 export const salaryOrThirteenthSchema = yup.object().shape({

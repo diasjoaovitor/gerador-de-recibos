@@ -1,7 +1,8 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { theme } from './theme'
+
 import App from './App'
+import { theme } from './theme'
 
 const queryClient = new QueryClient()
 

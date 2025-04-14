@@ -1,4 +1,3 @@
-import { FormEvent, ReactNode } from 'react'
 import {
   Box,
   Button,
@@ -7,7 +6,10 @@ import {
   Stepper,
   Typography
 } from '@mui/material'
+import { FormEvent, ReactNode } from 'react'
+
 import { Alert, Loader, TAlertProps } from '@/components'
+
 import * as S from './styles'
 
 type TLayoutProps = {

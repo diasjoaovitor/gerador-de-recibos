@@ -1,4 +1,4 @@
-import { StyleDictionary} from 'pdfmake/interfaces'
+import { StyleDictionary } from 'pdfmake/interfaces'
 
 export const docStyles: StyleDictionary = {
   header: {
@@ -6,7 +6,7 @@ export const docStyles: StyleDictionary = {
     bold: true,
     alignment: 'center',
     margin: [0, 10, 0, 10]
-  }, 
+  },
   label: {
     bold: true
   },

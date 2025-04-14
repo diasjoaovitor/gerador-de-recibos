@@ -1,5 +1,6 @@
-import { getCities, getUfs } from '@/services'
 import { useQueries } from '@tanstack/react-query'
+
+import { getCities, getUfs } from '@/services'
 
 export const useLoadData = ({ acronym }: { acronym: string | undefined }) => {
   const queries = useQueries({

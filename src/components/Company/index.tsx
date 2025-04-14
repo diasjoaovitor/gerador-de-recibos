@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, FormControl, SelectChangeEvent, TextField } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+
 import { InputMask, Layout, Select } from '@/components'
-import { TCompany } from '@/types'
 import { useAlert } from '@/hooks'
-import { getStorage, setStorage } from '@/utils'
-import { useLoadData } from './use-load-data'
-import { schema } from './schema'
-import { sortUfsByName } from './sort-ufs-by-name'
-import { sortCitiesByName } from './sort-cities-by-name'
 import * as GS from '@/styles'
+import { TCompany } from '@/types'
+import { getStorage, setStorage } from '@/utils'
+
+import { schema } from './schema'
+import { sortCitiesByName } from './sort-cities-by-name'
+import { sortUfsByName } from './sort-ufs-by-name'
+import { useLoadData } from './use-load-data'
 
 type TCompanyProps = {
   setStep: (step: number) => void

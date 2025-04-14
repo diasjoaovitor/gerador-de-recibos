@@ -1,6 +1,8 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces'
-import { formatCurrency, formatDate, formatToExtensive } from '@/utils'
+
 import { TVacationReceipt } from '@/types'
+import { formatCurrency, formatDate, formatToExtensive } from '@/utils'
+
 import { docFooter, docHeader, docStyles, TDocHeader } from './partials'
 
 export type TVacationPDF = {

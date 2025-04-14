@@ -1,4 +1,4 @@
-import { NumericFormat } from 'react-number-format'
+import { Lock, LockOpen } from '@mui/icons-material'
 import {
   FormControl,
   IconButton,
@@ -7,7 +7,7 @@ import {
   OutlinedInput,
   OutlinedInputProps
 } from '@mui/material'
-import { Lock, LockOpen } from '@mui/icons-material'
+import { NumericFormat } from 'react-number-format'
 
 export type TInputCurrencyProps = Omit<
   OutlinedInputProps,

@@ -1,4 +1,5 @@
 import { Content } from 'pdfmake/interfaces'
+
 import { TCompany, TEmployee } from '@/types'
 
 export type TDocHeader = {

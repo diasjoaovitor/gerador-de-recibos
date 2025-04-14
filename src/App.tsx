@@ -1,6 +1,8 @@
-import { useState } from 'react'
-import { Company, Employee, Receipt } from '@/components'
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+
+import { Company, Employee, Receipt } from '@/components'
+
 import { getSalaries } from './services'
 
 export const App = () => {
