@@ -1,10 +1,11 @@
-import * as pdfMake from 'pdfmake/build/pdfmake'
-import * as pdfFonts from 'pdfmake/build/vfs_fonts'
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { Dayjs } from 'dayjs'
 import { FormControl, SelectChangeEvent } from '@mui/material'
+import { Dayjs } from 'dayjs'
+import * as pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ValidationError } from 'yup'
+
 import { Layout, Select } from '@/components'
-import { TCompany, TEmployee, TSalary } from '@/types'
 import { useAlert } from '@/hooks'
 import {
   proportionalThirteenthPdf,
@@ -13,8 +14,9 @@ import {
   thirteenthSalaryPdf,
   vacationPdf
 } from '@/pdf'
+import { TCompany, TEmployee, TSalary } from '@/types'
 import { formatCurrencyToNumber, getStorage } from '@/utils'
-import { selectItems } from './select-items'
+
 import {
   currentDate,
   getEndDate,
@@ -22,6 +24,12 @@ import {
   getPeriod,
   getYearMonth
 } from './date'
+import {
+  ProportionalThirteenth,
+  ProportionalVacation,
+  SalaryOrThirteenth,
+  Vacation
+} from './Options'
 import {
   getNetValue,
   getOneThird,
@@ -34,13 +42,7 @@ import {
   salaryOrThirteenthSchema,
   vacationSchema
 } from './schemas'
-import {
-  ProportionalThirteenth,
-  ProportionalVacation,
-  SalaryOrThirteenth,
-  Vacation
-} from './Options'
-import { ValidationError } from 'yup'
+import { selectItems } from './select-items'
 
 type TReceiptProps = {
   isLoading: boolean
@@ -55,7 +57,7 @@ export const Receipt = ({
   salaries,
   setStep
 }: TReceiptProps) => {
-  ;(window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs
+  ;(pdfMake as any).vfs = pdfFonts
 
   const getStorageData = () => {
     const company = getStorage('company') as TCompany | null
