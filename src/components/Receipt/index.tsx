@@ -231,7 +231,8 @@ export const Receipt = ({
         endDate,
         period,
         salary,
-        updatedProportionalVacationNetValue
+        proportionalOneThird,
+        proportionalNetValue: updatedProportionalVacationNetValue
       },
       title: 'Recibo de Férias Proporcionais',
       fn: proportionalVacationPdf,

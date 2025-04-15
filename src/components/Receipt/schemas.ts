@@ -50,11 +50,11 @@ export const proportionalVacationSchema = yup.object().shape({
     .number()
     .required('Salário é obrigatório')
     .min(1, 'Salário deve ser maior que 0'),
-  oneThird: yup
+  proportionalOneThird: yup
     .number()
     .required('Terço de férias é obrigatório')
     .min(0, 'Terço de férias deve ser maior ou igual a 0'),
-  netValue: yup
+  proportionalNetValue: yup
     .number()
     .required('Valor líquido é obrigatório')
     .min(1, 'Valor líquido deve ser maior que 0')
