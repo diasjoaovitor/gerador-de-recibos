@@ -10,6 +10,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "services:up": "docker compose up -d",
+    "services:down": "docker compose down",
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
